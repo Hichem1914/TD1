@@ -1,4 +1,6 @@
-const boutons = document.querySelectorAll('.choix');
+const boutonsPierre = document.querySelectorAll('.choix-pierre');
+const boutonsFeuille = document.querySelectorAll('.choix-feuille');
+const boutonsCiseaux = document.querySelectorAll('.choix-ciseaux');
 const affichage = document.getElementById('affichage-resultat');
 const victoiresEl = document.getElementById('score-victoire');
 const egalitesEl = document.getElementById('score-egalite');
@@ -16,6 +18,8 @@ boutons.forEach(bouton => {
   else if(texte === 'Ciseaux') bouton.classList.add('ciseaux');
 });
 */
+
+
 function majScore() {
   victoiresEl.textContent = score.victoires + (score.victoires > 1 ? ' victoires' : ' victoire');
   egalitesEl.textContent = score.egalites + (score.egalites > 1 ? ' égalités' : ' égalité');
@@ -36,7 +40,8 @@ function determinerResultat(joueur, ordi) {
 }
 
 // Quand le joueur clique sur un bouton
-boutons.forEach(bouton => {
+/*
+boutonsPierre.forEach(bouton => {
   bouton.addEventListener('click', () => {
     const choixJoueur = bouton.textContent;
     const choixOrdi = options[Math.floor(Math.random() * options.length)];
@@ -53,6 +58,32 @@ boutons.forEach(bouton => {
                           Résultat : <strong>${resultat}</strong>`;
   });
 });
+*/
+
+
+function jouer(choixJoueur) {
+    const choixOrdi = options[Math.floor(Math.random() * options.length)];
+    const resultat = determinerResultat(choixJoueur, choixOrdi);
+
+    if(resultat == 'victoire') {
+      score.victoires++;
+    } else if(resultat == 'defaite') {
+      score.defaites++; 
+    } else {
+      score.egalites++; 
+    }
+
+    majScore(); 
+
+    affichage.innerHTML =`Tu as choisi <b>${choixJoueur}</b><br>
+                          L'ordinateur a choisi <b>${choixOrdi}</b><br>
+                          Résultat : <strong>${resultat}</strong>`;
+}
+
+boutonsPierre.forEach(bouton=> bouton.addEventListener('click', () => jouer('Pierre'))); 
+boutonsFeuille.forEach(bouton=> bouton.addEventListener('click', () => jouer('Feuille'))); 
+boutonsCiseaux.forEach(bouton=> bouton.addEventListener('click', () => jouer('Ciseaux'))); 
+
 
 // on réinitialise le score en fonction du click du joueur
 resetBtn.addEventListener('click', () => {
